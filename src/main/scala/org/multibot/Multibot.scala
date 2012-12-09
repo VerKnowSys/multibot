@@ -128,7 +128,6 @@ object Multibottest extends PircBot {
         case "!!!reset" => scalaInt -= msg.channel
         case "!!!reset-all" => scalaInt.clear
 
-<<<<<<< HEAD
         case Cmd("%%" :: m :: Nil) => respondJSON(:/("tryruby.org") / "/levels/1/challenges/0" <:<
                     Map("Accept" -> "application/json, text/javascript, */*; q=0.01",
                         "Content-Type" -> "application/x-www-form-urlencoded; charset=UTF-8",
