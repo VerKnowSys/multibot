@@ -13,5 +13,10 @@ java \
 -Dmultibot.production=true \
 -Duser.name="${U_ID}" \
 -Duser.home="${U_HOME}" \
+-noverify \
 -XX:+CMSClassUnloadingEnabled \
+-Dfile.encoding=UTF-8 \
+-XX:MaxPermSize=512m \
+-Xmx1g \
+-server \
 -jar "${U_ASSEMBLY}"
