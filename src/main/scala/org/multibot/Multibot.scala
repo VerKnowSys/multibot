@@ -12,7 +12,7 @@ import java.io.{PrintStream, ByteArrayOutputStream}
 
 object Multibottest extends PircBot {
     val PRODUCTION = Option(System getProperty "multibot.production") map (_ toBoolean) getOrElse false
-    val BOTNAME = if (PRODUCTION) "multibot_" else "multibot__"
+    val BOTNAME = if (PRODUCTION) "lang-bot" else "lang-bot_"
     val BOTMSG = BOTNAME + ":"
     val NUMLINES = 5
     val INNUMLINES = 8
@@ -30,7 +30,7 @@ object Multibottest extends PircBot {
 
     def connect() {
         connect("irc.freenode.net")
-        val channels = if (PRODUCTION) List("#clojure.pl", "#scala.pl", "#jruby", "#ruby.pl", "#rubyonrails.pl", "#scala", "#scalaz", "#lift", "#playframework", "#bostonpython", "#fp-in-scala", "#progfun") else List("#multibottest")
+        val channels = if (PRODUCTION) List("#scala.pl", "#verknowsys") else List("#verknowsys-tests")
         channels foreach joinChannel
     }
 
@@ -72,7 +72,7 @@ object Multibottest extends PircBot {
     val stdErr = System.err
     val conOut = new ByteArrayOutputStream
     val conOutStream = new PrintStream(conOut)
-    
+
     def captureOutput(block: => Unit) = try {
         System setOut conOutStream
         System setErr conOutStream
@@ -230,7 +230,7 @@ object Multibottest extends PircBot {
         case Cmd("&" :: m :: Nil) =>
             val src = """
                 var http = require('http');
-    
+
                 http.createServer(function (req, res) {
                   res.writeHead(200, {'Content-Type': 'text/plain'});
                   var a = (""" + m + """) + "";
