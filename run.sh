@@ -2,7 +2,7 @@
 
 U_ID="$(id -u)"
 U_HOME="$(pwd)"
-U_ASSEMBLY="target/multibot-assembly-1.0.jar"
+U_ASSEMBLY="${U_HOME}/target/multibot210-assembly-1.0.jar"
 
 if [ ! -f "${ASSEMBLY}" ]; then
   sbt assembly
@@ -13,5 +13,10 @@ java \
 -Dmultibot.production=true \
 -Duser.name="${U_ID}" \
 -Duser.home="${U_HOME}" \
+-noverify \
 -XX:+CMSClassUnloadingEnabled \
--jar ./target/multibot-assembly-1.0.jar
+-Dfile.encoding=UTF-8 \
+-XX:MaxPermSize=512m \
+-Xmx1g \
+-server \
+-jar "${U_ASSEMBLY}"
