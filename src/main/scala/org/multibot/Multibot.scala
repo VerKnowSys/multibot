@@ -9,7 +9,7 @@ object Multibottest extends PircBot {
     val stdErr = System.err
 
     val PRODUCTION = Option(System getProperty "multibot.production") map (_ toBoolean) getOrElse false
-    val BOTNAME = if (PRODUCTION) "multibot210_" else "multibot210__"
+    val BOTNAME = if (PRODUCTION) "lang-bot" else "lang-bot-0"
     val BOTMSG = BOTNAME + ":"
     val NUMLINES = 5
     val INNUMLINES = 8
@@ -20,14 +20,14 @@ object Multibottest extends PircBot {
 
     def main(args: Array[String]) {
         setName(BOTNAME)
-        setVerbose(true)
+        setVerbose(false)
         setEncoding("UTF-8")
         connect()
     }
 
     def connect() {
         connect("irc.freenode.net")
-        val channels = if (PRODUCTION) List("#clojure.pl", "#scala.pl", "#scala", "#scalaz", "#lift", "#playframework", "#fp-in-scala", "#progfun") else List("#multibottest")
+        val channels = if (PRODUCTION) List("#verknowsys") else List("#multibottest")
         channels foreach joinChannel
     }
 
