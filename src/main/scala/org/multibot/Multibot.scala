@@ -111,9 +111,9 @@ object Multibottest extends PircBot {
         // case "@listchans" => sendMessage(msg.channel, getChannels mkString " ")
 
         case "@bot" | "@bots" => sendMessage(msg.channel, ":)")
-        case "@help" => sendMessage(msg.channel, "(!!!) scala (reset|type|scalex)")
+        case "@help" => sendMessage(msg.channel, "(!) scala (reset|type|scalex)")
 
-        case Cmd("!!!" :: m :: Nil) => scalaInterpreter(msg.channel){(si, cout) =>
+        case Cmd("!" :: m :: Nil) => scalaInterpreter(msg.channel){(si, cout) =>
             import scala.tools.nsc.interpreter.Results._
             val lines = (si interpret m match {
                 case Success => cout.toString.replaceAll("(?m:^res[0-9]+: )", "") // + "\n" + iout.toString.replaceAll("(?m:^res[0-9]+: )", "")
@@ -124,48 +124,48 @@ object Multibottest extends PircBot {
             //.split("\n") take NUMLINES foreach (m => sendMessage(msg.channel, " " + (if (m.charAt(0) == 13) m.substring(1) else m)))
         }
 
-        case Cmd("!!!type" :: m :: Nil) => scalaInterpreter(msg.channel)((si, cout) => sendMessage(msg.channel, (si.typeOfExpression(m).directObjectString)))
-        case "!!!reset" => scalaInt -= msg.channel
-        case "!!!reset-all" => scalaInt.clear
+        case Cmd("!type" :: m :: Nil) => scalaInterpreter(msg.channel)((si, cout) => sendMessage(msg.channel, (si.typeOfExpression(m).directObjectString)))
+        case "!reset" => scalaInt -= msg.channel
+        case "!reset-all" => scalaInt.clear
 
-        case Cmd("%%" :: m :: Nil) => respondJSON(:/("tryruby.org") / "/levels/1/challenges/0" <:<
-                    Map("Accept" -> "application/json, text/javascript, */*; q=0.01",
-                        "Content-Type" -> "application/x-www-form-urlencoded; charset=UTF-8",
-                        "X-Requested-With" -> "XMLHttpRequest",
-                        "Connection" -> "keep-alive") <<< "cmd=" + java.net.URLEncoder.encode(m, "UTF-8")) {
-            case JObject(JField("success", JBool(true)) :: JField("output", JString(output)) :: _) => Some(output)
-            case JObject(JField("success", JBool(false)) :: _ :: JField("result", JString(output)) :: _) => Some(output)
-            case e => Some("unexpected: " + e)
-        }
+        // case Cmd("%%" :: m :: Nil) => respondJSON(:/("tryruby.org") / "/levels/1/challenges/0" <:<
+        //             Map("Accept" -> "application/json, text/javascript, */*; q=0.01",
+        //                 "Content-Type" -> "application/x-www-form-urlencoded; charset=UTF-8",
+        //                 "X-Requested-With" -> "XMLHttpRequest",
+        //                 "Connection" -> "keep-alive") <<< "cmd=" + java.net.URLEncoder.encode(m, "UTF-8")) {
+        //     case JObject(JField("success", JBool(true)) :: JField("output", JString(output)) :: _) => Some(output)
+        //     case JObject(JField("success", JBool(false)) :: _ :: JField("result", JString(output)) :: _) => Some(output)
+        //     case e => Some("unexpected: " + e)
+        // }
 
-        case "%reset" => jrubyInt -= msg.channel
-        case "%reset-all" => jrubyInt.clear
+        // case "%reset" => jrubyInt -= msg.channel
+        // case "%reset-all" => jrubyInt.clear
 
-        case Cmd("%" :: m :: Nil) => jrubyInterpreter(msg.channel){(jr, sc, cout) =>
-            try {
-                val result = jr.evalScriptlet(m, sc).toString
-                sendLines(msg.channel, cout.toString)
-                sendLines(msg.channel, result.toString)
-            } catch {
-                case e: Exception => sendMessage(msg.channel, e.getMessage)
-            }
-        }
+        // case Cmd("%" :: m :: Nil) => jrubyInterpreter(msg.channel){(jr, sc, cout) =>
+        //     try {
+        //         val result = jr.evalScriptlet(m, sc).toString
+        //         sendLines(msg.channel, cout.toString)
+        //         sendLines(msg.channel, result.toString)
+        //     } catch {
+        //         case e: Exception => sendMessage(msg.channel, e.getMessage)
+        //     }
+        // }
 
-        case Cmd("&" :: m :: Nil) =>
-            val src = """
-                var http = require('http');
+        // case Cmd("&" :: m :: Nil) =>
+        //     val src = """
+        //         var http = require('http');
 
-                http.createServer(function (req, res) {
-                  res.writeHead(200, {'Content-Type': 'text/plain'});
-                  var a = (""" + m + """) + "";
-                  res.end(a);
-                }).listen();
-            """
+        //         http.createServer(function (req, res) {
+        //           res.writeHead(200, {'Content-Type': 'text/plain'});
+        //           var a = (""" + m + """) + "";
+        //           res.end(a);
+        //         }).listen();
+        //     """
 
-            respondJSON((:/("jsapp.us") / "ajax" << compact(render( ("actions", List(("action", "test") ~ ("code", src) ~ ("randToken", "3901") ~ ("fileName", ""))) ~ ("user", "null") ~ ("token", "null"))))) {
-                case JObject(JField("user", JNull) :: JField("data", JArray(JString(data) :: Nil)) :: Nil) => var s: String = ""; (new Http with NoLogging)(url(data) >- {source => s = source}); Some(s)
-                case e => Some("unexpected: " + e)
-            }
+        //     respondJSON((:/("jsapp.us") / "ajax" << compact(render( ("actions", List(("action", "test") ~ ("code", src) ~ ("randToken", "3901") ~ ("fileName", ""))) ~ ("user", "null") ~ ("token", "null"))))) {
+        //         case JObject(JField("user", JNull) :: JField("data", JArray(JString(data) :: Nil)) :: Nil) => var s: String = ""; (new Http with NoLogging)(url(data) >- {source => s = source}); Some(s)
+        //         case e => Some("unexpected: " + e)
+        //     }
 
 
         //case Cmd("^" :: m :: Nil) => jythonInterpreter(msg.channel){(jy, cout) =>
@@ -179,20 +179,20 @@ object Multibottest extends PircBot {
         //    }
         //}
 
-        case Cmd("^" :: m :: Nil) => respondJSON2(:/("try-python.appspot.com") / "json" << compact(render( ("method", "exec") ~ ("params", List(pythonSession, m)) ~ ("id" -> "null") )),
-                                                 :/("try-python.appspot.com") / "json" << compact(render( ("method", "start_session") ~ ("params", List[String]()) ~ ("id" -> "null") ))) {
-            case JObject(JField("error", JNull) :: JField("id" , JString("null")) :: JField("result", JObject(JField("text", JString(result)) :: _)) :: Nil) => Some(result)
-            case e => Some("unexpected: " + e)
-        } {
-            case JObject(_ :: _ :: JField("result" , JString(session)) :: Nil) => pythonSession = session; None
-            case e => None
-        }
+        // case Cmd("^" :: m :: Nil) => respondJSON2(:/("try-python.appspot.com") / "json" << compact(render( ("method", "exec") ~ ("params", List(pythonSession, m)) ~ ("id" -> "null") )),
+        //                                          :/("try-python.appspot.com") / "json" << compact(render( ("method", "start_session") ~ ("params", List[String]()) ~ ("id" -> "null") ))) {
+        //     case JObject(JField("error", JNull) :: JField("id" , JString("null")) :: JField("result", JObject(JField("text", JString(result)) :: _)) :: Nil) => Some(result)
+        //     case e => Some("unexpected: " + e)
+        // } {
+        //     case JObject(_ :: _ :: JField("result" , JString(session)) :: Nil) => pythonSession = session; None
+        //     case e => None
+        // }
 
-        case Cmd("##" :: m :: Nil) => respondJSON(:/("groovyconsole.appspot.com") / "executor.groovy"  <<? Map("script" -> m), true) {
-            case JObject(JField("executionResult", JString(result)) :: JField("outputText", JString(output)) :: JField("stacktraceText", JString("")) :: Nil) => Some(result.trim + "\n" + output.trim)
-            case JObject(JField("executionResult", JString("")) :: JField("outputText", JString("")) :: JField("stacktraceText", JString(err)) :: Nil) => Some(err)
-            case e => Some("unexpected" + e)
-        }
+        // case Cmd("##" :: m :: Nil) => respondJSON(:/("groovyconsole.appspot.com") / "executor.groovy"  <<? Map("script" -> m), true) {
+        //     case JObject(JField("executionResult", JString(result)) :: JField("outputText", JString(output)) :: JField("stacktraceText", JString("")) :: Nil) => Some(result.trim + "\n" + output.trim)
+        //     case JObject(JField("executionResult", JString("")) :: JField("outputText", JString("")) :: JField("stacktraceText", JString(err)) :: Nil) => Some(err)
+        //     case e => Some("unexpected" + e)
+        // }
 
         case m if (m.startsWith("@") || m.startsWith(">") || m.startsWith("?")) && m.trim.length > 1 && !LAMBDABOTIGNORE.contains(msg.channel) =>
             lastChannel = Some(msg.channel)
@@ -203,11 +203,11 @@ object Multibottest extends PircBot {
 
     val cookies = scala.collection.mutable.Map[String, String]()
 
-    def respondJSON(req: Request, join: Boolean = false)(response: JValue => Option[String])(implicit msg: Msg) = respond(req, join){line => response(JsonParser.parse(line))}
+    // def respondJSON(req: Request, join: Boolean = false)(response: JValue => Option[String])(implicit msg: Msg) = respond(req, join){line => response(JsonParser.parse(line))}
 
-    def respondJSON2(req: Request, init: Request)(response: JValue => Option[String])(initResponse: JValue => Option[String])(implicit msg: Msg) = try {
-        respond(req){line => response(JsonParser.parse(line))}
-    } catch {
-        case _ =>
-    }
+    // def respondJSON2(req: Request, init: Request)(response: JValue => Option[String])(initResponse: JValue => Option[String])(implicit msg: Msg) = try {
+    //     respond(req){line => response(JsonParser.parse(line))}
+    // } catch {
+    //     case _ =>
+    // }
 }
