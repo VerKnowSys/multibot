@@ -11,7 +11,7 @@ fi
 unset JAVA_OPTS
 # unset SBT_OPTS
 java \
--Djava.security.manager \
+# -Djava.security.manager \
 -Dmultibot.production=true \
 -Duser.name="${U_ID}" \
 -Duser.home="${U_HOME}" \
