@@ -20,7 +20,7 @@ object Multibottest extends PircBot {
 
     def main(args: Array[String]) {
         setName(BOTNAME)
-        setVerbose(false)
+        setVerbose(true)
         setEncoding("UTF-8")
         connect()
     }
