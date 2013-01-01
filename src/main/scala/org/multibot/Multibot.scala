@@ -90,8 +90,8 @@ object Multibottest extends PircBot {
             // settings.YdepMethTpes.value = true
             val si = new IMain(settings, writer) { override def parentClassLoader = Thread.currentThread.getContextClassLoader }
 
-            si.quietImport("scalaz._")
-            si.quietImport("Scalaz._")
+            // si.quietImport("scalaz._")
+            // si.quietImport("Scalaz._")
             si.quietImport("org.scalacheck.Prop._")
             si.quietImport("com.verknowsys.served._")
             si.quietImport("com.verknowsys.served.api._")
