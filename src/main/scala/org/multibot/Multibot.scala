@@ -93,6 +93,13 @@ object Multibottest extends PircBot {
             si.quietImport("scalaz._")
             si.quietImport("Scalaz._")
             si.quietImport("org.scalacheck.Prop._")
+            si.quietImport("com.verknowsys.served._")
+            si.quietImport("com.verknowsys.served.api._")
+            si.quietImport("com.verknowsys.served.utils._")
+            si.quietImport("com.verknowsys.served.utils._")
+            si.quietImport("org.json4s._")
+            si.quietImport("org.json4s.native.JsonMethods._")
+
             si
         })
         captureOutput{f(si, conOut)}
