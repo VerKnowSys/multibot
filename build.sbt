@@ -15,7 +15,7 @@ libraryDependencies ++= {
     	// "org.scalaz" %% "scalaz-effect" % scalazVersion cross CrossVersion.full,
     	// "org.scalaz" %% "scalaz-typelevel" % scalazVersion cross CrossVersion.full,
     	"pircbot" % "pircbot" % "1.5.0",
-    	"org.scala-lang" % "scala-compiler" % "2.10.0-RC2",
+    	"org.scala-lang" % "scala-compiler" % "2.10.0-RC2"
     	// "org.scalacheck" %% "scalacheck" % "1.10.1-SNAPSHOT" cross CrossVersion.full
     )
 }
