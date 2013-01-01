@@ -92,7 +92,7 @@ object Multibottest extends PircBot {
 
             // si.quietImport("scalaz._")
             // si.quietImport("Scalaz._")
-            si.quietImport("org.scalacheck.Prop._")
+            // si.quietImport("org.scalacheck.Prop._")
             si.quietImport("com.verknowsys.served._")
             si.quietImport("com.verknowsys.served.api._")
             si.quietImport("com.verknowsys.served.utils._")
